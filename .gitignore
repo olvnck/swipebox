@@ -16,5 +16,8 @@ Thumbs.db
 # Folder config file
 Desktop.ini
 
+package-lock.json
+yarn.lock
+
 # Mac crap
 .DS_Store

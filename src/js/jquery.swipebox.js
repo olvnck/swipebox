@@ -60,6 +60,10 @@
 			ui.closeSlide();
 		};
 
+		$.swipebox.destroy = function () {
+			$( document ).off( 'click' );
+		};
+
 		$.swipebox.extend = function () {
 			return ui;
 		};
@@ -67,6 +71,7 @@
 		plugin.init = function() {
 
 			plugin.settings = $.extend( {}, defaults, options );
+			selector = plugin.settings.selector;
 
 			if ( $.isArray( elem ) ) {
 
@@ -584,7 +589,10 @@
 					} );
 				}
 
-				$( '#swipebox-close' ).bind( action, function() {
+				$( '#swipebox-close' ).bind( action, function( event ) {
+					event.preventDefault();
+					event.stopPropagation();
+
 					$this.closeSlide();
 				} );
 			},
@@ -919,6 +927,9 @@
 			 * Destroy the whole thing
 			 */
 			destroy : function () {
+
+				var index = $('#swipebox-slider .slide').index($('#swipebox-slider .slide.current'));
+
 				$( window ).unbind( 'keyup' );
 				$( 'body' ).unbind( 'touchstart' );
 				$( 'body' ).unbind( 'touchmove' );
@@ -937,7 +948,7 @@
 				$.swipebox.isOpen = false;
 
 				if ( plugin.settings.afterClose ) {
-					plugin.settings.afterClose();
+					plugin.settings.afterClose( index );
 				}
 			}
 		};
